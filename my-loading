@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>loading</title>
+<style type="text/css">
+	.loadingbox{
+		width: 300px;
+		height: 300px;
+		margin: 10px auto;
+		border: 1px solid #f00;
+		text-align: center;
+	}
+	.circle{
+	    width: 200px;
+	    height: 200px;
+	    margin: 25px auto;
+	    border-radius: 50%;
+		border: 25px solid #c3e2df;
+		vertical-align: middle;
+	}
+	.circleleft, .circleright{
+		width: 125px;
+    	height: 250px;
+		position: relative;
+		overflow: hidden;
+	}
+	.circleleft{
+		top: -25px;
+    	left: -25px;
+	}
+	.circleright{
+		top: -275px;
+    	left: 100px;
+	}
+	.circleleft div, .circleright div{
+	    width: 200px;
+	    height: 200px;
+	    border-radius: 50%;
+		border: 25px solid #c3e2df;
+	}
+	.circleleft div{
+		border-right: 25px solid #459b3a;
+	    border-top: 25px solid #459b3a;
+	    transform: rotate(45deg);
+	}
+	.circleright div{
+		position: relative;
+		left: -125px;
+		border-left: 25px solid #459b3a;
+	    border-bottom: 25px solid #459b3a;
+	    transform: rotate(45deg);
+	}
+	.progressbox{
+		width: 300px;
+		height: 100px;
+		margin: 10px auto;
+		border: 1px solid #0f0;
+		text-align: center;
+	}
+	.progress{
+		width: 200px;
+		height: 20px;
+		margin: 30px auto;
+		border: 1px solid #f00;
+		text-align: center;
+		background-color: #c3e2df;
+	}
+	.progress span{
+		display: block;
+		width: 10%;
+		height: 20px;
+		text-align: center;
+		background-color: #459b3a;
+	}
+</style>
+</head>
+
+<body>
+	<div class="loadingbox">
+		<div class="circle">
+			<div class="circleleft">
+				<div id="leftcircle"></div>
+			</div>
+			<div class="circleright">
+				<div id="rightcircle"></div>
+			</div>
+		</div>
+	</div>
+	<div class="progressbox">
+		<div class="progress"><span id="progressbar">0%</span></div>
+	</div>
+	<form action="/" id="subchange">
+		<label>输入进度值：<input type="text" name="progress" id="provalue" value="0"></label>
+		<button type="button" id="changepro">确认</button>
+	</form>
+</body>
+<script type="text/javascript">
+	var left = document.getElementById('leftcircle')
+	var right = document.getElementById('rightcircle')
+	var probar = document.getElementById('progressbar')
+	document.getElementById('subchange').onsubmit = function () {
+		right.style.transform = 'rotate(45deg)'
+		left.style.transform = 'rotate(45deg)'
+		var progress = document.getElementById('provalue').value
+		probar.style.width = progress*100+'%'
+		probar.innerHTML = progress*100+'%'
+		if (progress==0.5) {
+			right.style.transform = 'rotate(225deg)'
+		} else if (progress>0.5) {
+			right.style.transform = 'rotate(225deg)'
+			left.style.transform = 'rotate('+(45+progress*360-180)+'deg)'
+		} else {
+			right.style.transform = 'rotate('+(45+progress*180)+'deg)'
+		}
+		return false
+	}
+	document.getElementById('changepro').onclick = function () {
+		right.style.transform = 'rotate(45deg)'
+		left.style.transform = 'rotate(45deg)'
+		var progress = document.getElementById('provalue').value
+		probar.style.width = progress*100+'%'
+		probar.innerHTML = progress*100+'%'
+		if (progress==0.5) {
+			right.style.transform = 'rotate(225deg)'
+		} else if (progress>0.5) {
+			right.style.transform = 'rotate(225deg)'
+			left.style.transform = 'rotate('+(45+progress*360-180)+'deg)'
+		} else {
+			right.style.transform = 'rotate('+(45+progress*180)+'deg)'
+		}
+	}
+</script>
+</html>
