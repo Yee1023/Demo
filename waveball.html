@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>wave</title>
+	<style type="text/css">
+		.wavelinebox{
+			width: 500px;
+			height: 300px;
+			border: 1px solid #f00;
+		}
+		.wl_horizontal {
+		    width: 100%;
+		    height: 10px;
+		    background-image: -webkit-radial-gradient(circle, transparent, transparent 9px, orange 9px, orange 10px, transparent 10px, transparent);
+		    background-image: -moz-radial-gradient(circle, transparent, transparent 9px, orange 9px, orange 10px, transparent 10px, transparent);
+		    background-image: radial-gradient(circle, transparent, transparent 9px, orange 9px, orange 10px, transparent 10px, transparent);
+		    background-size: 20px 20px;
+		}
+		.wl_vertical {
+		    width: 10px;
+		    height: 260px;
+		    background-image: -webkit-radial-gradient(circle, transparent, transparent 9px, orange 9px, orange 10px, transparent 10px, transparent);
+		    background-image: -moz-radial-gradient(circle, transparent, transparent 9px, orange 9px, orange 10px, transparent 10px, transparent);
+		    background-image: radial-gradient(circle, transparent, transparent 9px, orange 9px, orange 10px, transparent 10px, transparent);
+		    background-size: 20px 20px;
+		}
+		.wavebox{
+			width: 600px;
+			height: 600px;
+			border: 1px solid #f00;
+		}
+		canvas{
+			border: medium double black;
+			margin: 16px;
+		}
+	</style>
+</head>
+<body>
+<!-- 	<div class="wavelinebox">
+	    <div class="wl_horizontal"></div>
+	    <div class="wl_vertical"></div>
+	</div> -->
+	<div class="wavebox">
+		<canvas id="wave" width="500" height="500"></canvas> 
+	</div>
+</body>
+<script type="text/javascript">
+	var af
+	var ctx = document.getElementById('wave').getContext('2d')
+	ctx.clearRect(0, 0, 200, 200)
+	// 进度
+	var progress = 0.1
+	// 是否换向
+	var backleft = false, backright = false
+	// 圆心坐标
+	var circlePoint = [250, 250]
+	// 圆的半径
+	var circleR = 100
+	// 波浪摇晃度数
+	var range = 4
+	var leftrange = -2
+	var rightrange = 6
+
+	function draw () {
+		ctx.clearRect(0, 0, 500, 500)
+		// 有一位老人在重庆的电脑边画了一个圆
+		ctx.lineWidth = 16
+		ctx.strokeStyle = '#47a5fd'
+		ctx.beginPath()
+		ctx.arc(circlePoint[0], circlePoint[1], circleR + 8, 0, 2*Math.PI, false)
+		ctx.stroke()
+
+		// 进度点坐标
+		var thePoint = [circlePoint[0], circlePoint[1] + circleR - 2 * circleR * progress]
+		if (progress < 0.2) {
+			range = 
+		} else {
+			ctx.arc(circlePoint[0], circlePoint[1], circleR, -rightA, -leftA, false)
+		}
+		// 计算圆两边的点的坐标
+		if (backleft) {
+			if (leftrange < -range) {
+				backleft = false
+				leftrange = -range
+			} else {
+				leftrange -= .3
+			}
+		} else {
+			if (leftrange > range) {
+				backleft = true
+				leftrange = range
+			} else {
+				leftrange += .3
+			}
+		}
+		if (backright) {
+			if (rightrange < -range) {
+				backright = false
+				rightrange = -range
+			} else {
+				rightrange -= .3
+			}
+		} else {
+			if (rightrange > range) {
+				backright = true
+				rightrange = range
+			} else {
+				rightrange += .3
+			}
+		}
+		// 曲线线控制点
+		// if (progress < 0.9) {
+		// 	ctx.arc(circlePoint[0], circlePoint[1], circleR, rightA, leftA, false)
+		// } else {
+		// 	ctx.arc(circlePoint[0], circlePoint[1], circleR, -rightA, -leftA, false)
+		// }
+		var cp1 = [circlePoint[0], (thePoint[1] - 30)]
+		var cp2 = [circlePoint[0], (thePoint[1] + 10)]
+
+		var deltaleft = Math.sqrt(Math.pow(circleR, 2) - Math.pow((circlePoint[0] - (thePoint[1] + leftrange)), 2))
+		var deltaright = Math.sqrt(Math.pow(circleR, 2) - Math.pow((circlePoint[0] - (thePoint[1] + rightrange)), 2))
+		var leftPoint = [thePoint[0] - deltaleft, thePoint[1] + leftrange]
+		var rightPoint = [thePoint[0] + deltaright, thePoint[1] + rightrange]
+		
+		// 计算出圆两边点的弧度
+		var leftA = 90 * Math.PI / 180 + Math.asin(deltaleft / circleR)
+		var rightA = 90 * Math.PI / 180 - Math.asin(deltaright / circleR)
+
+		ctx.lineWidth = 2
+		ctx.strokeStyle = 'rgba(112,191,252, 0.8)' 
+		ctx.fillStyle = 'rgba(112,191,252, 0.8)'
+		ctx.beginPath()
+		ctx.moveTo(leftPoint[0], leftPoint[1])
+		// ctx.lineTo(rightPoint[0], rightPoint[1])
+		// ctx.quadraticCurveTo(thePoint[0] - 0.2 * circleR, thePoint[1] - 0.5 * circleR, rightPoint[0], rightPoint[1])
+		ctx.bezierCurveTo(cp1[0], cp1[1], cp2[0], cp2[1], rightPoint[0], rightPoint[1])
+		// ctx.closePath()
+		if (progress < 0.5) {
+			ctx.arc(circlePoint[0], circlePoint[1], circleR, rightA, leftA, false)
+		} else {
+			ctx.arc(circlePoint[0], circlePoint[1], circleR, -rightA, -leftA, false)
+		}	
+		ctx.fill()
+		ctx.stroke()
+
+		
+		// ctx.beginPath()
+		// ctx.strokeStyle = 'rgba(112,191,252, 0.8)'
+		// if (progress < 0.5) {
+		// 	ctx.arc(circlePoint[0], circlePoint[1], circleR, rightA, leftA, false)
+		// } else {
+		// 	ctx.arc(circlePoint[0], circlePoint[1], circleR, -rightA, -leftA, false)
+		// }		
+		// // ctx.closePath()
+		// ctx.fill()
+		// ctx.stroke()
+		af = window.requestAnimationFrame(draw)
+	}
+// setInterval(function () {
+// 	draw(0.7)
+// }, 1000)
+// setTimeout(function () {
+// 	window.cancelAnimationFrame(af)
+// }, 3000)
+draw()
+</script>
+</html>
