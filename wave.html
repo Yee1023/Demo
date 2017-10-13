@@ -51,7 +51,7 @@
 	var ctx = document.getElementById('wave').getContext('2d')
 	ctx.clearRect(0, 0, 200, 200)
 	// 进度
-	var progress = 0.1
+	var progress = 0.5
 	// 是否换向
 	var backleft = false, backright = false
 	// 圆心坐标
@@ -59,9 +59,10 @@
 	// 圆的半径
 	var circleR = 100
 	// 波浪摇晃度数
-	var range = 4
+	var range = 20 * (0.5 - Math.abs(0.5 - progress))
+	range = range <= 4 ? 3 : range
 	var leftrange = -2
-	var rightrange = 6
+	var rightrange = range <= 4 ? 3 : 6
 
 	function draw () {
 		ctx.clearRect(0, 0, 500, 500)
@@ -74,25 +75,20 @@
 
 		// 进度点坐标
 		var thePoint = [circlePoint[0], circlePoint[1] + circleR - 2 * circleR * progress]
-		if (progress < 0.2) {
-			range = 
-		} else {
-			ctx.arc(circlePoint[0], circlePoint[1], circleR, -rightA, -leftA, false)
-		}
 		// 计算圆两边的点的坐标
 		if (backleft) {
 			if (leftrange < -range) {
 				backleft = false
 				leftrange = -range
 			} else {
-				leftrange -= .3
+				leftrange -= range <= 4 ? .1 : .2
 			}
 		} else {
 			if (leftrange > range) {
 				backleft = true
 				leftrange = range
 			} else {
-				leftrange += .3
+				leftrange += range <= 4 ? .1 : .2
 			}
 		}
 		if (backright) {
@@ -100,29 +96,26 @@
 				backright = false
 				rightrange = -range
 			} else {
-				rightrange -= .3
+				rightrange -= range <= 4 ? .1 : .2
 			}
 		} else {
 			if (rightrange > range) {
 				backright = true
 				rightrange = range
 			} else {
-				rightrange += .3
+				rightrange += range <= 4 ? .1 : .2
 			}
 		}
-		// 曲线线控制点
-		// if (progress < 0.9) {
-		// 	ctx.arc(circlePoint[0], circlePoint[1], circleR, rightA, leftA, false)
-		// } else {
-		// 	ctx.arc(circlePoint[0], circlePoint[1], circleR, -rightA, -leftA, false)
-		// }
-		var cp1 = [circlePoint[0], (thePoint[1] - 30)]
-		var cp2 = [circlePoint[0], (thePoint[1] + 10)]
 
 		var deltaleft = Math.sqrt(Math.pow(circleR, 2) - Math.pow((circlePoint[0] - (thePoint[1] + leftrange)), 2))
 		var deltaright = Math.sqrt(Math.pow(circleR, 2) - Math.pow((circlePoint[0] - (thePoint[1] + rightrange)), 2))
 		var leftPoint = [thePoint[0] - deltaleft, thePoint[1] + leftrange]
 		var rightPoint = [thePoint[0] + deltaright, thePoint[1] + rightrange]
+
+
+		// 曲线控制点坐标
+		var cp1 = [thePoint[0], thePoint[1] - 6 * leftrange]
+		var cp2 = [thePoint[0], thePoint[1] + 6 * rightrange]
 		
 		// 计算出圆两边点的弧度
 		var leftA = 90 * Math.PI / 180 + Math.asin(deltaleft / circleR)
@@ -145,25 +138,9 @@
 		ctx.fill()
 		ctx.stroke()
 
-		
-		// ctx.beginPath()
-		// ctx.strokeStyle = 'rgba(112,191,252, 0.8)'
-		// if (progress < 0.5) {
-		// 	ctx.arc(circlePoint[0], circlePoint[1], circleR, rightA, leftA, false)
-		// } else {
-		// 	ctx.arc(circlePoint[0], circlePoint[1], circleR, -rightA, -leftA, false)
-		// }		
-		// // ctx.closePath()
-		// ctx.fill()
-		// ctx.stroke()
 		af = window.requestAnimationFrame(draw)
 	}
-// setInterval(function () {
-// 	draw(0.7)
-// }, 1000)
-// setTimeout(function () {
-// 	window.cancelAnimationFrame(af)
-// }, 3000)
+
 draw()
 </script>
 </html>
