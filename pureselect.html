@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>pureSelect</title>
     <script src="pureselect.js"></script>
+    <link rel="stylesheet" href="pureselect.css">
 </head>
 <body>
 <form>
@@ -20,11 +21,27 @@
         <option value="v9">bst9</option>
         <option value="v10">test</option>
     </select>
+    <!--<div class="sltwarp">-->
+        <!--<span class="sltcontent" contenteditable="true"></span>-->
+        <!--<span class="sltarrow"></span>-->
+        <!--<ul class="sltlist">-->
+            <!--<li data="">请选择</li>-->
+            <!--<li data="v1">atest1</li>-->
+            <!--<li data="v2">atest2</li>-->
+            <!--<li data="v3">btest3</li>-->
+            <!--<li data="v4">btest4</li>-->
+            <!--<li data="v5">ctest5</li>-->
+            <!--<li data="v6">aest6</li>-->
+            <!--<li data="v7">aest7</li>-->
+            <!--<li data="v8">bst8</li>-->
+            <!--<li data="v9">bst9</li>-->
+            <!--<li data="v10">test</li>-->
+        <!--</ul>-->
+    <!--</div>-->
 </form>
 </body>
-<script type="javascript">
+<script type="text/javascript">
     var target = document.getElementById('castom')
-    var slWarp = document.createElement('div')
-
+    var test = new Y.pureSelect(target)
 </script>
 </html>
