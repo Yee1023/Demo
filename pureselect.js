@@ -12,20 +12,31 @@ Y.pureSelect.prototype = {
     init: function(target){
         this.isclose = true
 
+        // 创建下拉框节点
         this.domel.slWarp = document.createElement('div')
         this.domel.slIpt = document.createElement('span')
         this.domel.slArrow = document.createElement('span')
         this.domel.slList = document.createElement('ul')
+        // 添加节点属性
         this.domel.slWarp.classList.add("sltwarp")
         this.domel.slIpt.setAttribute('contenteditable', true)
+        this.domel.slIpt.innerHTML = '请选择'
         this.domel.slIpt.classList.add("sltcontent")
         this.domel.slArrow.classList.add("sltarrow")
         this.domel.slList.classList.add("sltlist")
-        // this._input = $('<input>').addClass('input_text').attr('placeholder','请选择');
-        // this.arrow = $('<a>').addClass('arrow');
-        // this._list = $('<ul>').addClass('ul_list').css({'z-index':100});
-        target.style.display = 'none'
-        target.insertBefore(this.domel.slWarp, target)
+        // 为节点添加事件
+        var _this = this
+        this.domel.slArrow.addEventListener('click', function () {
+            if (_this.domel.slList.style.display == 'none') {
+                _this.domel.slList.style.display = 'block'
+            } else {
+                _this.domel.slList.style.display = 'none'
+            }
+        })
+        // 添加节点
+        target.parentNode.insertBefore(this.domel.slWarp, target)
+        this.domel.slWarp.appendChild(this.domel.slArrow)
+        this.domel.slWarp.appendChild(this.domel.slList)
         // this.combo_el.append(this._input).append(this.arrow);
         // this.setValue(target.find('option'));
         // this.combo_el.append(this._list.hide());
@@ -39,6 +50,8 @@ Y.pureSelect.prototype = {
         // this.autohide(this);
         // this.placeChange();
         // if(this.searchable)this.searchable();
+
+        target.style.display = 'none'
     },
     setValue: function(options){
         for(var i=0; i<options.length;i++){
